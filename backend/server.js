@@ -60,17 +60,22 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
-// ✅ అప్‌డేట్ చేసిన Nodemailer ట్రాన్స్‌పోర్ట్ (Port 587 మరియు IPv4 ఫోర్స్ సెట్టింగ్స్ తో)
+// ✅ OPTIMIZED NODEMAILER TRANSPORT FOR RENDER DEPLOYMENTS (Port 465 SSL)
 const mailTransporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'), // 👈 465 నుండి 587 కి మార్చాము
-  secure: false, // 👈 Port 587 కి ఇది ఖచ్చితంగా false ఉండాలి
-  connectionTimeout: 10000, // 10 సెకన్లు టైమ్ అవుట్
-  greetingTimeout: 10000,
+  port: parseInt(process.env.SMTP_PORT || '465'), // Changed from 587 to 465
+  secure: true, // Must be true for port 465
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS // Ensure this matches your .env key exactly
+  },
+  connectionTimeout: 15000, // Elevated to 15 seconds to give Render breathing room
+  greetingTimeout: 15000,
+  socketTimeout: 15000,
   tls: {
     rejectUnauthorized: false,
-    // Render లో IPv6 గొడవలు రాకుండా IPv4 ని మాత్రమే వాడమని ఫోర్స్ చేయడానికి:
-    family: 4 
+    // Forces the underlying net socket connect rule to pick IPv4 explicitly 
+    minVersion: 'TLSv1.2'
   }
 });
 
@@ -170,11 +175,23 @@ app.post('/api/secure-cohort-list', async (req, res) => {
 });
 
 // DELETE ROUTE
+// SECURED DELETE ROUTE
 app.delete('/api/cohort-records/:id', async (req, res) => {
   try {
-    await CohortCertificate.findByIdAndDelete(req.params.id);
+    const { adminPassword } = req.body;
+    if (adminPassword !== ADMIN_SECRET_KEY) {
+      return res.status(401).json({ success: false, message: "Unauthorized deletion attempt blocked." });
+    }
+    
+    const deletedRecord = await CohortCertificate.findByIdAndDelete(req.params.id);
+    if (!deletedRecord) {
+      return res.status(404).json({ success: false, message: "Record not found." });
+    }
+    
     res.json({ success: true });
-  } catch (error) { res.status(500).json({ success: false }); }
+  } catch (error) { 
+    res.status(500).json({ success: false, message: "Database deletion crash." }); 
+  }
 });
 
 // EXCEL EXPORT (Will now print the live Cloudinary HTTPS URLs)
