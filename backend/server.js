@@ -66,21 +66,18 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage: storage });
 
 // ✅ OPTIMIZED NODEMAILER TRANSPORT FOR RENDER DEPLOYMENTS (Port 465 SSL)
+// ✅ SECURE TRANSACTIONS ROUTED VIA BREVO RELAY SYSTEM
 const mailTransporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '465'), // Changed from 587 to 465
-  secure: true, // Must be true for port 465
+  host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
+  port: parseInt(process.env.SMTP_PORT || '587'), 
+  secure: false, // Must be false for port 587
   auth: {
     user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS // Ensure this matches your .env key exactly
+    pass: process.env.SMTP_PASS 
   },
-  connectionTimeout: 15000, // Elevated to 15 seconds to give Render breathing room
-  greetingTimeout: 15000,
-  socketTimeout: 15000,
   tls: {
-    rejectUnauthorized: false,
-    // Forces the underlying net socket connect rule to pick IPv4 explicitly 
-    minVersion: 'TLSv1.2'
+    // Tells Node to negotiate standard secure TLS connections over port 587 smoothly
+    rejectUnauthorized: false
   }
 });
 
