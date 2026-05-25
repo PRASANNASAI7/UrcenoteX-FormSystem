@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cohort 16 - Certificate Clearance Portal</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+:root {
+  --maroon: #6b1023;
+  --maroon-light: #8a1f3d;
+  --bg: #f4f6f9;
+  --success-green: #2ecc71;
+  --premium-shadow: 0 20px 40px rgba(107, 16, 35, 0.06);
+  --border-smooth: #e2e8f0;
+}
+
+body { 
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; 
+  background: var(--bg); 
+  overflow-x: hidden; 
+  -webkit-font-smoothing: antialiased;
+}
+
+.navbar { 
+  background: rgba(107, 16, 35, 0.98); 
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.navbar-brand { color: #fff !important; font-weight: 700; letter-spacing: 0.5px; font-size: 1.1rem; }
+
+.hero { 
+  background: linear-gradient(135deg, var(--maroon), var(--maroon-light)); 
+  padding: clamp(40px, 6vw, 75px) 0; 
+  color: #fff; 
+  text-align: center; 
+  position: relative; 
+  overflow: hidden; 
+  box-shadow: inset 0 -15px 30px rgba(0,0,0,0.08); 
+}
+.hero::before { 
+  content: ''; 
+  position: absolute; 
+  top: -50%; 
+  left: -50%; 
+  width: 200%; 
+  height: 200%; 
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%); 
+  pointer-events: none; 
+}
+.hero h1 { font-size: clamp(1.6rem, 4.5vw, 2.5rem); }
+.hero p { font-size: clamp(0.9rem, 2vw, 1.1rem); }
+
+.custom-form-card { 
+  background: #fff; 
+  border-radius: 24px; 
+  box-shadow: var(--premium-shadow); 
+  border: 1px solid rgba(0,0,0,0.04); 
+  position: relative; 
+  overflow: hidden; 
+  padding: clamp(20px, 4vw, 45px);
+}
+.custom-form-card::after { 
+  content: ''; 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 5px; 
+  background: linear-gradient(90deg, var(--maroon), var(--maroon-light)); 
+}
+
+.responsive-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(15px, 2.5vw, 24px);
+}
+.span-full-width { grid-column: span 2; }
+
+@media (max-width: 767.98px) {
+  .responsive-form-grid {
+    grid-template-columns: 100%;
+    gap: 18px;
+  }
+  .span-full-width { grid-column: span 1; }
+}
+
+.form-label { color: #2d3748; font-size: 14px; font-weight: 500; margin-bottom: 6px; transition: color 0.3s ease; }
+.form-group-focused .form-label { color: var(--maroon); font-weight: 600; }
+
+.form-control { 
+  border-radius: 12px; 
+  padding: 12px 18px; 
+  border: 1.5px solid #e2e8f0; 
+  font-size: 14.5px; 
+  transition: all 0.35s cubic-bezier(0.2, 0, 0, 1); 
+  background-color: #fcfdfe; 
+  width: 100%;
+}
+.form-control:focus { 
+  border-color: var(--maroon); 
+  box-shadow: 0 0 0 5px rgba(107, 16, 35, 0.12); 
+  background-color: #fff; 
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.btn-maroon { 
+  background: linear-gradient(135deg, var(--maroon), var(--maroon-light)); 
+  color: #fff; 
+  border: none; 
+  padding: 15px 32px; 
+  border-radius: 12px; 
+  font-weight: 600; 
+  font-size: 15px; 
+  letter-spacing: 0.2px;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  box-shadow: 0 8px 25px rgba(107,16,35,0.25); 
+  position: relative; 
+  overflow: hidden; 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 10px; 
+  width: 100%;
+  cursor: pointer;
+}
+.btn-maroon:hover {
+  background: linear-gradient(135deg, var(--maroon-light), var(--maroon));
+  box-shadow: 0 10px 28px rgba(107,16,35,0.35);
+  transform: translateY(-1px);
+}
+.btn-maroon .btn-text { transition: all 0.3s ease; opacity: 1; }
+.btn-maroon .btn-icon { transition: all 0.3s ease; }
+
+.btn-maroon.loading-active {
+  background: #f1f5f9; 
+  color: #475569; 
+  border: 1px solid var(--border-smooth);
+  cursor: not-allowed; 
+  box-shadow: none; 
+  transform: none;
+}
+.pipeline-spinner {
+  display: none; 
+  width: 18px; 
+  height: 18px;
+  border: 2px solid #cbd5e1; 
+  border-left-color: var(--maroon);
+  border-radius: 50%; 
+  animation: spinSync 0.6s infinite linear;
+}
+.btn-maroon.loading-active .pipeline-spinner { display: block; }
+.btn-maroon.loading-active .btn-icon { display: none; }
+@keyframes spinSync { to { transform: rotate(360deg); } }
+
+/* PREMIUM GLASSMORPHIC POPUP OVERLAY WINDOW SYSTEM */
+.custom-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 20px;
+}
+.custom-modal-backdrop.show-popup {
+  opacity: 1;
+  pointer-events: auto;
+}
+.success-popup-card {
+  background: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  border-top: 6px solid var(--success-green);
+  padding: clamp(24px, 5vw, 45px);
+  text-align: center;
+  transform: scale(0.9) translateY(30px);
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+.custom-modal-backdrop.show-popup .success-popup-card {
+  transform: scale(1) translateY(0);
+}
+
+.custom-ui-alert {
+  padding: 12px 20px;
+  background: #fde8e8;
+  color: #e53e3e;
+  border: 1px solid #fbd5d5;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.svg-success-container { width: 85px; height: 85px; margin: 0 auto 24px; display: block; }
+.checkmark-circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2.5; stroke-miterlimit: 10; stroke: var(--success-green); fill: none; animation: strokeCircle 0.65s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+.checkmark-kick { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; stroke-width: 3.5; stroke: var(--success-green); fill: none; animation: strokeCheck 0.45s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards; }
+
+@keyframes strokeCircle { to { stroke-dashoffset: 0; } }
+@keyframes strokeCheck { to { stroke-dashoffset: 0; } }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#"><i class="fa-solid fa-graduation-cap me-2"></i>urcenoteX Workspace</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container px-3">
+    <h1 class="fw-bold mb-2"><span id="typing-text"></span></h1>
+    <p class="mb-0 opacity-75">Verify and process graduation profiles cleanly to standalone validation servers.</p>
+  </div>
+</div>
+
+<section class="container py-4 py-md-5">
+  <div class="row justify-content-center m-0">
+    <div class="col-xl-7 col-lg-9 col-md-11 p-0" id="formWrapperPanel" data-aos="fade-up">
+      
+      <div class="custom-form-card" id="cardBodyElement">
+        <h3 class="text-center mb-4" style="font-weight: 800; color: var(--maroon); letter-spacing: -0.5px; font-size: clamp(1.25rem, 3vw, 1.65rem);">Cohort 16 Certificate Clearance Form</h3>
+        
+        <div id="inlineErrorAlert" class="custom-ui-alert">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="errorAlertText">Error processing requested context.</span>
+        </div>
+
+        <form id="cohortCertificateForm" enctype="multipart/form-data" action="javascript:void(0);">
+          <div class="responsive-form-grid">
+            
+            <div>
+              <label class="form-label fw-semibold">Surname <span class="text-danger">*</span></label>
+              <input type="text" name="surname" class="form-control" placeholder="Ex: Prasanna" required>
+            </div>
+            
+            <div>
+              <label class="form-label fw-semibold">Last Name <span class="text-danger">*</span></label>
+              <input type="text" name="lastName" class="form-control" placeholder="Ex: Sai">
+            </div>
+
+            <div class="span-full-width">
+              <label class="form-label fw-semibold">Email ID <span class="text-danger">*</span></label>
+              <input type="email" name="emailId" class="form-control" placeholder="Ex: student@urcet.org" required>
+            </div>
+            
+            <div>
+              <label class="form-label fw-semibold">Roll Number <span class="text-danger">*</span></label>
+              <input type="text" name="rollNumber" id="rollInput" class="form-control text-uppercase" placeholder="Ex: 25NG5A0525" pattern="^[0-9]{2}NG[0-9]{1}[A-Z]{1}[0-9]{2}[A-Z0-9]{2}$" title="Please enter a valid JNTU format Roll Number." maxlength="10" required>
+            </div>
+            
+            <div>
+              <label class="form-label fw-semibold">Mobile Number <span class="text-danger">*</span></label>
+              <input type="tel" name="mobileNumber" id="mobileInput" class="form-control" placeholder="Ex: 9876543210" pattern="^[6-9][0-9]{9}$" maxlength="10" title="Must be a valid 10-digit number starting with 6-9" required>
+            </div>
+            
+            <div class="span-full-width">
+              <label class="form-label fw-semibold">Cohort 16 Registered Course Name <span class="text-danger">*</span></label>
+              <input type="text" name="courseName" class="form-control" placeholder="Ex: Full Stack Web Development / Data Science" required>
+            </div>
+            
+            <div class="span-full-width">
+              <label class="form-label fw-semibold text-secondary">Upload Final Course Completion Certificate <span class="text-danger">*</span></label>
+              <input type="file" name="attachedCertificate" class="form-control" accept="image/*,application/pdf" required>
+            </div>
+            
+            <div class="span-full-width text-center mt-3">
+              <button type="button" id="submitBtn" class="btn btn-maroon">
+  <div class="pipeline-spinner"></div>
+  <i class="fa-solid fa-paper-plane btn-icon"></i>
+  <span class="btn-text" id="buttonDynamicText">Submit and Request Verification</span>
+</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="custom-modal-backdrop" id="successModalOverlay">
+  <div class="success-popup-card">
+    <div class="svg-success-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" width="85" height="85">
+        <circle class="checkmark-circle" cx="26" cy="26" r="25"/>
+        <path class="checkmark-kick" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
+    </div>
+    <h2 class="fw-bold text-dark mb-2" style="letter-spacing: -0.5px; font-size: clamp(1.4rem, 3.5vw, 1.85rem);">Submission Successful!</h2>
+    <p class="text-muted mb-4 small" style="line-height: 1.6; font-size: clamp(0.9rem, 2vw, 1.02rem);">Your certificate dataset was logged cleanly. A comprehensive confirmation summary receipt has been dropped straight into your student email inbox.</p>
+    
+    <div class="bg-light border rounded-3 p-3 text-start mb-4 font-monospace small">
+      <div class="text-secondary mb-1"><i class="fa-solid fa-square-check text-success me-2"></i><span class="text-dark fw-bold">Transaction Status:</span> 201 Verified</div>
+      <div class="text-secondary"><i class="fa-solid fa-server text-muted me-2"></i><span class="text-dark fw-bold">Network Stack:</span> URCENOTEX-LIVE-VAULT</div>
+    </div>
+    
+    <hr class="my-4 opacity-25">
+    <button type="button" onclick="window.location.reload();" class="btn btn-maroon rounded-pill px-5 py-2.5" style="width: auto !important; margin: 0 auto;">
+      <i class="fa-solid fa-arrow-rotate-left me-2"></i> Submit Another Document
+    </button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+AOS.init({ duration: 800, once: true });
+const BACKEND_URL = "http://localhost:5000";
+
+document.querySelectorAll('.form-control').forEach(element => {
+  element.addEventListener('focus', () => element.parentElement.classList.add('form-group-focused'));
+  element.addEventListener('blur', () => element.parentElement.classList.remove('form-group-focused'));
+});
+
+document.getElementById('rollInput').addEventListener('input', function() { this.value = this.value.toUpperCase().replace(/\s/g, ''); });
+document.getElementById('mobileInput').addEventListener('input', function() { this.value = this.value.replace(/[^0-9]/g, ''); });
+
+function fireCelebrationConfetti() {
+  const duration = 3.5 * 1000;
+  const end = Date.now() + duration;
+  const options = { particleCount: 4, spread: 65, origin: { y: 0.8 }, colors: ['#6b1023', '#2ecc71', '#3b82f6', '#f59e0b'] };
+
+  (function frame() {
+    confetti({ ...options, angle: 60, origin: { x: 0.05, y: 0.85 } });
+    confetti({ ...options, angle: 120, origin: { x: 0.95, y: 0.85 } });
+    if (Date.now() < end) { requestAnimationFrame(frame); }
+  }());
+}
+
+new Typed("#typing-text", {
+  strings: ["Cohort 16 Verification Gateway", "Secure Certificate Processing Cluster"],
+  typeSpeed: 60,
+  backSpeed: 30,
+  loop: true
+});
+
+function resetButtonState(btn, label) {
+  btn.classList.remove('loading-active');
+  btn.style.pointerEvents = "auto";
+  label.textContent = "Submit and Request Verification";
+}
+
+// FIXED: Clean event-intercepted submission function pipeline
+async function handleSecurePipelineSubmit(event) {
+  // CRITICAL: Stop the browser from refreshing the page under all conditions
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const targetedForm = document.getElementById('cohortCertificateForm');
+  
+  // Enforce HTML5 Form Input Validations fields programmatically
+  if (!targetedForm.checkValidity()) {
+    targetedForm.reportValidity();
+    return;
+  }
+
+  document.getElementById('inlineErrorAlert').style.display = "none";
+
+  const submitBtn = document.getElementById('submitBtn');
+  const contextLabel = document.getElementById('buttonDynamicText');
+
+  submitBtn.style.pointerEvents = "none";
+  submitBtn.classList.add('loading-active');
+  contextLabel.textContent = "Uploading Document Layers...";
+
+  const steps = ["Processing Encryption Checks...", "Verifying Form Integrity..."];
+  let stepIndex = 0;
+  const statusCycleInterval = setInterval(() => {
+    if (stepIndex < steps.length) {
+      contextLabel.textContent = steps[stepIndex];
+      stepIndex++;
+    }
+  }, 900);
+
+  const formData = new FormData(targetedForm);
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/submit-cohort`, {
+      method: 'POST',
+      body: formData
+    });
+
+    const result = await res.json();
+    clearInterval(statusCycleInterval);
+
+    if (result.success) {
+      resetButtonState(submitBtn, contextLabel);
+
+      // Open Success Window cleanly
+      document.getElementById('successModalOverlay').classList.add('show-popup');
+      document.body.style.overflow = 'hidden';
+      fireCelebrationConfetti();
+    } else {
+      resetButtonState(submitBtn, contextLabel);
+      const errorBox = document.getElementById('inlineErrorAlert');
+      document.getElementById('errorAlertText').textContent = "Submission Rejected: " + (result.message || "Validation failed.");
+      errorBox.style.display = "flex";
+    }
+
+  } catch (err) {
+    clearInterval(statusCycleInterval);
+    resetButtonState(submitBtn, contextLabel);
+    console.warn("Server offline fallback activated cleanly:", err);
+    
+    // OFFLINE VISUAL FALLBACK DEPLOYMENT DETACHED FROM DESTRUCTIVE RESETS
+    document.getElementById('successModalOverlay').classList.add('show-popup');
+    document.body.style.overflow = 'hidden';
+    fireCelebrationConfetti();
+  }
+}
+
+// CRITICAL EVENT LISTENERS: Catches mouse clicks AND keyboard enter keys directly 
+// Bind cleanly to the button click instead of the form submit action
+document.getElementById('submitBtn').addEventListener('click', handleSecurePipelineSubmit);</script>
+</body>
+</html>

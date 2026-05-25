@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cohort 16 - Administration Console</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --maroon: #6b1023;
+  --bg: #f8f9fa;
+}
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: none; } 
+
+.navbar { background: var(--maroon); }
+.navbar-brand { color: #fff !important; font-weight: 700; }
+.section-title { font-weight: 800; color: var(--maroon); }
+
+.response-card { background: #fff; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 20px; border-left: 5px solid var(--maroon); transition: 0.2s ease; }
+.response-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+
+.btn-delete { color: #dc3545; border: 1px solid #dc3545; background: transparent; transition: 0.2s; }
+.btn-delete:hover { background: #dc3545; color: #fff; }
+
+.btn-excel { background: #1f7246; color: #fff; border: none; font-weight: 600; border-radius: 50px; padding: 8px 25px; transition: 0.2s ease; }
+.btn-excel:hover { background: #165232; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(31,114,70,0.25); }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="#"><i class="fa-solid fa-vault me-2"></i>Cohort 16 Administration Terminal</a>
+    <span class="badge bg-success rounded-pill px-3 py-2"><i class="fa-solid fa-user-shield me-1"></i> Firewall Active</span>
+  </div>
+</nav>
+
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-11">
+      
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+        <h2 class="section-title m-0"><i class="fa-solid fa-certificate me-2"></i> Certification Submissions</h2>
+        <button onclick="downloadExcelReport()" class="btn btn-excel"><i class="fa-solid fa-file-excel me-2"></i>Export Excel Sheet</button>
+      </div>
+
+      <div id="cohortWrapper" class="d-flex flex-column gap-3"></div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+const BACKEND_URL = "http://localhost:5000";
+let savedTokenInput = ""; 
+
+async function verifyIdentityGateway() {
+  const userPasswordInput = prompt("🔒 Access Restricted. Enter Administration Console Key:");
+  
+  if (!userPasswordInput) {
+    window.location.href = "Forms.html";
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/secure-cohort-list`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminPassword: userPasswordInput })
+    });
+    const outcome = await res.json();
+
+    if (outcome.success) {
+      savedTokenInput = userPasswordInput; 
+      document.body.style.display = "block"; 
+      renderCohortCards(outcome.data);
+    } else {
+      alert("Access Denied: Credentials invalid.");
+      window.location.href = "Forms.html";
+    }
+  } catch(err) {
+    alert("Connection Error targeting authentication firewalls.");
+    window.location.href = "Forms.html";
+  }
+}
+
+function renderCohortCards(records) {
+  const container = document.getElementById('cohortWrapper');
+  container.innerHTML = "";
+  
+  if(records.length === 0) {
+    container.innerHTML = `<p class="text-center text-muted py-5 fs-5">No certificate profiles logged yet inside MySQL arrays.</p>`;
+    return;
+  }
+
+  records.forEach(item => {
+    container.innerHTML += `
+      <div class="response-card d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3" id="record-row-${item.id}">
+        <div>
+          <h5 class="fw-bold mb-1 text-dark">${item.surname} ${item.lastName || ''}</h5>
+          <p class="small text-muted mb-2">
+            <i class="fa-solid fa-envelope me-1"></i> ${item.emailId} | 
+            <i class="fa-solid fa-id-card me-1"></i> <strong>${item.rollNumber}</strong> | 
+            <i class="fa-solid fa-phone me-1"></i> ${item.mobileNumber}
+          </p>
+          <div class="small text-secondary mb-0">
+            <span class="badge bg-light text-dark border p-2 mb-1"><i class="fa-solid fa-book-bookmark me-1 text-primary"></i>Course: ${item.courseName}</span>
+            <span class="ms-2"><i class="fa-solid fa-clock me-1"></i>Submitted: ${new Date(item.createdAt).toLocaleString()}</span>
+          </div>
+        </div>
+        <div class="d-flex gap-2 align-self-stretch align-self-md-center justify-content-end">
+          <a href="${BACKEND_URL}${item.fileUrl}" target="_blank" class="btn btn-outline-dark btn-sm rounded-pill px-3"><i class="fa-solid fa-eye me-1"></i> Inspect File</a>
+          <button onclick="purgeCohortRecord(${item.id})" class="btn btn-delete btn-sm rounded-pill px-3">
+            <i class="fa-solid fa-trash-can me-1"></i> Remove Row
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+async function purgeCohortRecord(targetId) {
+  if(!confirm("Are you sure you want to delete this graduation certification record from your database? This action cannot be undone.")) return;
+  
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/cohort-records/${targetId}`, { method: 'DELETE' });
+    const result = await res.json();
+    
+    if(result.success) {
+      const targetElement = document.getElementById(`record-row-${targetId}`);
+      targetElement.style.opacity = 0;
+      targetElement.style.transform = "translateX(25px)";
+      setTimeout(() => targetElement.remove(), 300);
+    } else {
+      alert("Error processing record removal statements.");
+    }
+  } catch(err) {
+    alert("Connection failure experienced targeting execution loops.");
+  }
+}
+
+async function downloadExcelReport() {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/download-cohort-excel`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminPassword: savedTokenInput })
+    });
+
+    if (!response.ok) {
+      alert("Excel compilation block encountered initialization validation issues.");
+      return;
+    }
+
+    const blobFileObject = await response.blob();
+    const runtimeUrl = window.URL.createObjectURL(blobFileObject);
+    
+    const hiddenAnchorElement = document.createElement('a');
+    hiddenAnchorElement.href = runtimeUrl;
+    hiddenAnchorElement.download = `Cohort16_Certificates_${Date.now()}.xlsx`;
+    document.body.appendChild(hiddenAnchorElement);
+    hiddenAnchorElement.click();
+    
+    hiddenAnchorElement.remove();
+    window.URL.revokeObjectURL(runtimeUrl);
+  } catch (error) {
+    alert("Error communicating with the excel extraction microservices.");
+  }
+}
+
+window.onload = verifyIdentityGateway;
+</script>
+</body>
+</html>
