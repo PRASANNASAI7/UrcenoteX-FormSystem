@@ -325,7 +325,9 @@ body {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 AOS.init({ duration: 800, once: true });
-const BACKEND_URL = "http://localhost:5000";
+
+// ✅ లైవ్ రెండర్ సర్వర్ URL ఇక్కడ అప్‌డేట్ చేయబడింది
+const BACKEND_URL = "https://urcenotex-formsystem.onrender.com";
 
 document.querySelectorAll('.form-control').forEach(element => {
   element.addEventListener('focus', () => element.parentElement.classList.add('form-group-focused'));
@@ -360,9 +362,7 @@ function resetButtonState(btn, label) {
   label.textContent = "Submit and Request Verification";
 }
 
-// FIXED: Clean event-intercepted submission function pipeline
 async function handleSecurePipelineSubmit(event) {
-  // CRITICAL: Stop the browser from refreshing the page under all conditions
   if (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -370,7 +370,6 @@ async function handleSecurePipelineSubmit(event) {
 
   const targetedForm = document.getElementById('cohortCertificateForm');
   
-  // Enforce HTML5 Form Input Validations fields programmatically
   if (!targetedForm.checkValidity()) {
     targetedForm.reportValidity();
     return;
@@ -407,8 +406,6 @@ async function handleSecurePipelineSubmit(event) {
 
     if (result.success) {
       resetButtonState(submitBtn, contextLabel);
-
-      // Open Success Window cleanly
       document.getElementById('successModalOverlay').classList.add('show-popup');
       document.body.style.overflow = 'hidden';
       fireCelebrationConfetti();
@@ -422,17 +419,16 @@ async function handleSecurePipelineSubmit(event) {
   } catch (err) {
     clearInterval(statusCycleInterval);
     resetButtonState(submitBtn, contextLabel);
-    console.warn("Server offline fallback activated cleanly:", err);
+    console.error("Server connection error:", err);
     
-    // OFFLINE VISUAL FALLBACK DEPLOYMENT DETACHED FROM DESTRUCTIVE RESETS
-    document.getElementById('successModalOverlay').classList.add('show-popup');
-    document.body.style.overflow = 'hidden';
-    fireCelebrationConfetti();
+    // ✅ పాత తప్పుడు ఫాల్‌బ్యాక్ తొలగించి, ఇక్కడ నిజమైన ఎర్రర్ అలర్ట్ బాక్స్ చూపిస్తున్నాము
+    const errorBox = document.getElementById('inlineErrorAlert');
+    document.getElementById('errorAlertText').textContent = "Server Connection Failed. Please check internet or if backend is running.";
+    errorBox.style.display = "flex";
   }
 }
 
-// CRITICAL EVENT LISTENERS: Catches mouse clicks AND keyboard enter keys directly 
-// Bind cleanly to the button click instead of the form submit action
-document.getElementById('submitBtn').addEventListener('click', handleSecurePipelineSubmit);</script>
+document.getElementById('submitBtn').addEventListener('click', handleSecurePipelineSubmit);
+</script>
 </body>
 </html>

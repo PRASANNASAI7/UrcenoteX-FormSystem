@@ -60,12 +60,18 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
-// NODEMAILER TRANSPORT
+// ✅ అప్‌డేట్ చేసిన Nodemailer ట్రాన్స్‌పోర్ట్ (Port 587 మరియు IPv4 ఫోర్స్ సెట్టింగ్స్ తో)
 const mailTransporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '465'),
-  secure: true,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.SMTP_PORT || '587'), // 👈 465 నుండి 587 కి మార్చాము
+  secure: false, // 👈 Port 587 కి ఇది ఖచ్చితంగా false ఉండాలి
+  connectionTimeout: 10000, // 10 సెకన్లు టైమ్ అవుట్
+  greetingTimeout: 10000,
+  tls: {
+    rejectUnauthorized: false,
+    // Render లో IPv6 గొడవలు రాకుండా IPv4 ని మాత్రమే వాడమని ఫోర్స్ చేయడానికి:
+    family: 4 
+  }
 });
 
 async function dispatchConfirmationEmail(targetEmail, subjectText, htmlBodyContent) {
