@@ -5,7 +5,10 @@ const cors = require('cors');
 const path = require('path');
 const ExcelJS = require('exceljs');
 const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 require('dotenv').config();
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // 👇 ADD THIS EXACT BLOCK HERE TO FORCE IPv4 SYSTEM-WIDE 👇
 const dns = require('dns');
@@ -83,17 +86,17 @@ const mailTransporter = nodemailer.createTransport({
 
 async function dispatchConfirmationEmail(targetEmail, subjectText, htmlBodyContent) {
   try {
-    const mailOptions = {
-      from: `"Cohort 16 Administration" <${process.env.SMTP_USER}>`,
+    await resend.emails.send({
+      from: 'Cohort 16 Admin <onboarding@resend.dev>', // 👈 Default free sender address
       to: targetEmail,
       subject: subjectText,
-      html: htmlBodyContent
-    };
-    await mailTransporter.sendMail(mailOptions);
-    console.log(`Auto-Notification delivered to: ${targetEmail}`);
-  } catch (error) { console.error("Email Delivery Pipeline Failure:", error); }
+      html: htmlBodyContent,
+    });
+    console.log(`🚀 Auto-Notification delivered via Resend API to: ${targetEmail}`);
+  } catch (error) {
+    console.error("❌ Resend API Failure:", error);
+  }
 }
-
 const ADMIN_SECRET_KEY = "admin@urcet"; 
 
 // =========================================================================
