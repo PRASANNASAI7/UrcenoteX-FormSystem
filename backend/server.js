@@ -1,5 +1,5 @@
 const express = require('express');
-const { Sequelize, DataTypes } = require('sequelize');
+const mongoose = require('mongoose'); // Changed from Sequelize to Mongoose
 const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
@@ -15,39 +15,28 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// 1. ESTABLISH SQL DATABASE CONNECTION LIFECYCLE
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT || 'mysql',
-    logging: false
-  }
-);
+// 1. ESTABLISH MONGODB DATABASE CONNECTION LIFECYCLE
+// Your .env should have: MONGO_URI=mongodb://localhost:27017/cohort_db or MongoDB Atlas URI
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/cohort_db';
 
-// Test SQL connection availability
-sequelize.authenticate()
-  .then(() => console.log('MySQL Database Connected Successfully.'))
-  .catch(err => console.error('SQL Connection Breakdown Error:', err));
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('MongoDB Database Connected Successfully.'))
+  .catch(err => console.error('MongoDB Connection Breakdown Error:', err));
 
-// 2. DEFINE SYSTEM TABLES SCHEMA (Cohort 16 Consolidated Setup)
-const CohortCertificate = sequelize.define('CohortCertificate', {
-  id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  surname: { type: DataTypes.STRING, allowNull: false },
-  lastName: { type: DataTypes.STRING, allowNull: true }, // Optional field based on requirements
-  rollNumber: { type: DataTypes.STRING, allowNull: false },
-  emailId: { type: DataTypes.STRING, allowNull: false },
-  mobileNumber: { type: DataTypes.STRING, allowNull: false },
-  courseName: { type: DataTypes.STRING, allowNull: false },
-  fileUrl: { type: DataTypes.STRING, allowNull: false } // Required field!
-}, { timestamps: true });
+// 2. DEFINE SYSTEM SCHEMA & MODEL (MongoDB / Mongoose Setup)
+const cohortCertificateSchema = new mongoose.Schema({
+  surname: { type: String, required: true, trim: true },
+  lastName: { type: String, trim: true, default: null },
+  rollNumber: { type: String, required: true, uppercase: true, trim: true },
+  emailId: { type: String, required: true, lowercase: true, trim: true },
+  mobileNumber: { type: String, required: true, trim: true },
+  courseName: { type: String, required: true, trim: true },
+  fileUrl: { type: String, required: true }
+}, { 
+  timestamps: true // Automatically creates 'createdAt' and 'updatedAt' fields
+});
 
-// Sync database tables layout structural updates smoothly via alter: true
-sequelize.sync({ alter: true })
-  .then(() => console.log('MySQL Cohort Database Successfully Structural-Synced.'))
-  .catch(err => console.error('Database Sync Error:', err));
+const CohortCertificate = mongoose.model('CohortCertificate', cohortCertificateSchema);
 
 // 3. NODEMAILER EMAIL TRANSPORT ENGINE CONFIGURATION
 const mailTransporter = nodemailer.createTransport({
@@ -83,16 +72,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// MASTER SECRET GATEWAY PASSWORD KEY (Hidden securely on the backend server)
+// MASTER SECRET GATEWAY PASSWORD KEY
 const ADMIN_SECRET_KEY = "admin@urcet"; 
 
 // 5. API ROUTING CONTROLLERS
 
 // =========================================================================
-// FIXED ROUTE: Post Cohort Submission Form
-// =========================================================================
-// =========================================================================
-// PREMIUM STYLED COHORT FORM SUBMISSION ROUTE + RESPONSIVE HTML MAIL
+// POST: Post Cohort Submission Form (MongoDB Integrated)
 // =========================================================================
 app.post('/api/submit-cohort', upload.single('attachedCertificate'), async (req, res) => {
   try {
@@ -104,13 +90,14 @@ app.post('/api/submit-cohort', upload.single('attachedCertificate'), async (req,
 
     const fileDestination = `/uploads/${req.file.filename}`;
 
+    // MongoDB Data Insertion using Mongoose
     await CohortCertificate.create({
-      surname: surname.trim(),
-      lastName: lastName ? lastName.trim() : null,
-      rollNumber: rollNumber.toUpperCase().trim(),
-      emailId: emailId.trim().toLowerCase(),
-      mobileNumber: mobileNumber.trim(),
-      courseName: courseName.trim(),
+      surname,
+      lastName,
+      rollNumber,
+      emailId,
+      mobileNumber,
+      courseName,
       fileUrl: fileDestination
     });
 
@@ -127,7 +114,6 @@ app.post('/api/submit-cohort', upload.single('attachedCertificate'), async (req,
           <tr>
             <td align="center" style="padding: 40px 10px;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                
                 <tr>
                   <td align="center" style="background: linear-gradient(135deg, #6b1023, #8a1f3d); padding: 40px 30px;">
                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -144,11 +130,10 @@ app.post('/api/submit-cohort', upload.single('attachedCertificate'), async (req,
                     </table>
                   </td>
                 </tr>
-
                 <tr>
                   <td style="padding: 40px 35px; background-color: #ffffff;">
                     <p style="margin: 0 0 15px 0; font-size: 18px; font-weight: 700; color: #1a202c;">Dear ${surname} ${lastName || ''},</p>
-                    <p style="margin: 0 0 25px 0; font-size: 15px; color: #4a5568; line-height: 1.6;"> Your graduation records clearance request summary loop completed flawlessly. Your final course completion certificate file has been logged into our XAMPP local storage vaults.</p>
+                    <p style="margin: 0 0 25px 0; font-size: 15px; color: #4a5568; line-height: 1.6;"> Your graduation records clearance request summary loop completed flawlessly. Your final course completion certificate file has been logged securely into our MongoDB Cloud Systems.</p>
                     
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f7fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 20px; margin-bottom: 25px;">
                       <tr>
@@ -169,21 +154,18 @@ app.post('/api/submit-cohort', upload.single('attachedCertificate'), async (req,
                         <td style="padding: 6px 0; font-size: 14px; color: #1a202c; font-weight: 600;">${mobileNumber}</td>
                       </tr>
                       <tr>
-                        <td style="padding: 6px 0 12px 0; font-size: 14px; color: #718096; border-bottom: 1px solid #edf2f7;"><strong>Timestamp:</strong></td>
-                        <td style="padding: 6px 0 12px 0; font-size: 14px; color: #2b6cb0; font-weight: 600; border-bottom: 1px solid #edf2f7;">${new Date().toLocaleString()}</td>
+                        <td style="padding: 6px 0; 12px 0; font-size: 14px; color: #718096; border-bottom: 1px solid #edf2f7;"><strong>Timestamp:</strong></td>
+                        <td style="padding: 6px 0; 12px 0; font-size: 14px; color: #2b6cb0; font-weight: 600; border-bottom: 1px solid #edf2f7;">${new Date().toLocaleString()}</td>
                       </tr>
                     </table>
-
                     <p style="margin: 0; font-size: 13px; color: #a0aec0; line-height: 1.5; text-align: center;">This message acts as an automated submission receipt file transaction proof tracking block. Do not attempt direct email replies.</p>
                   </td>
                 </tr>
-
                 <tr>
                   <td align="center" style="background-color: #edf2f7; padding: 20px; font-size: 12px; color: #718096; border-top: 1px solid #e2e8f0;">
                     &copy; ${new Date().getFullYear()} urcenoteX System Clusters. All rights reserved.
                   </td>
                 </tr>
-
               </table>
             </td>
           </tr>
@@ -201,40 +183,50 @@ app.post('/api/submit-cohort', upload.single('attachedCertificate'), async (req,
   }
 });
 
-// SECURED ROUTE: Fetch Cohort Submissions List
+// =========================================================================
+// FETCH: Fetch Secure Cohort Submissions List (Sorted by latest)
+// =========================================================================
 app.post('/api/secure-cohort-list', async (req, res) => {
   try {
     const { adminPassword } = req.body;
     if (adminPassword !== ADMIN_SECRET_KEY) {
       return res.status(401).json({ success: false, message: "Unauthorized dashboard entry blocked." });
     }
-    const data = await CohortCertificate.findAll({ order: [['createdAt', 'DESC']] });
+    // Mongoose query syntax changed from findAll() to find().sort()
+    const data = await CohortCertificate.find().sort({ createdAt: -1 });
     res.json({ success: true, data: data });
   } catch (error) {
     res.status(500).json({ success: false, error: "Database retrieval crash." });
   }
 });
 
-// ROUTE: Delete Cohort data row
+// =========================================================================
+// DELETE: Delete Cohort data row by Document ID
+// =========================================================================
 app.delete('/api/cohort-records/:id', async (req, res) => {
   try {
-    await CohortCertificate.destroy({ where: { id: req.params.id } });
+    // Mongoose syntax to delete by MongoDB _id object
+    await CohortCertificate.findByIdAndDelete(req.params.id);
     res.json({ success: true });
-  } catch (error) { res.status(500).json({ success: false }); }
+  } catch (error) { 
+    res.status(500).json({ success: false }); 
+  }
 });
 
-// EXCEL ROUTE: Download Styled Cohort Spreadsheet
+// =========================================================================
+// EXCEL DOWNLOAD: Generate & Download Styled Cohort Spreadsheet
+// =========================================================================
 app.post('/api/download-cohort-excel', async (req, res) => {
   try {
     const { adminPassword } = req.body;
     if (adminPassword !== ADMIN_SECRET_KEY) return res.status(401).send("Unauthorized.");
 
-    const records = await CohortCertificate.findAll({ order: [['createdAt', 'DESC']] });
+    const records = await CohortCertificate.find().sort({ createdAt: -1 });
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Cohort 16 Certifications');
 
     worksheet.columns = [
-      { header: 'ID', key: 'id', width: 8 },
+      { header: 'ID', key: 'id', width: 28 }, // Increased width for MongoDB Hex ObjectID strings
       { header: 'Surname', key: 'surname', width: 18 },
       { header: 'Last Name', key: 'lastName', width: 18 },
       { header: 'Roll Number', key: 'rollNumber', width: 18 },
@@ -250,7 +242,7 @@ app.post('/api/download-cohort-excel', async (req, res) => {
 
     records.forEach(item => {
       worksheet.addRow({
-        id: item.id,
+        id: item._id.toString(), // Convert MongoDB ObjectId to string format cleanly
         surname: item.surname,
         lastName: item.lastName || '',
         rollNumber: item.rollNumber,
@@ -266,7 +258,10 @@ app.post('/api/download-cohort-excel', async (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename=Cohort16_Certificate_Records.xlsx');
     await workbook.xlsx.write(res);
     res.end();
-  } catch (error) { res.status(500).send("Excel generation failure."); }
+  } catch (error) { 
+    console.error(error);
+    res.status(500).send("Excel generation failure."); 
+  }
 });
 
-app.listen(PORT, () => console.log(`Cohort 16 Engine listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`Cohort 16 MongoDB Engine listening on port ${PORT}`));
