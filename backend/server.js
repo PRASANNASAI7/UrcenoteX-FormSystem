@@ -7,6 +7,11 @@ const ExcelJS = require('exceljs');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+// 👇 ADD THIS EXACT BLOCK HERE TO FORCE IPv4 SYSTEM-WIDE 👇
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first'); 
+// 👆 This stops Node from attempting IPv6 routes that Render cannot reach 👆
+
 // --- CLOUDINARY INTEGRATION LIBRARIES ---
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
