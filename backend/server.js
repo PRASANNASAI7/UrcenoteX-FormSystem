@@ -106,12 +106,14 @@ app.post('/api/submit-cohort', upload.single('attachedCertificate'), async (req,
   try {
     const { surname, lastName, rollNumber, emailId, mobileNumber, courseName } = req.body;
     
-    // Cloudinary upload details will be inside req.file.path instead of req.file.filename
     if (!surname || !rollNumber || !emailId || !mobileNumber || !courseName || !req.file) {
       return res.status(400).json({ success: false, message: "Please fill all required inputs and upload files." });
     }
 
-    // req.file.path gives the secure cloud URL (https://res.cloudinary.com/...)
+    // ❌ CHANCE THIS LINE IF IT SAYS req.file.originalname OR req.file.filename:
+    // const fileDestination = req.file.filename; 
+
+    // ✅ FIX: Force it to use req.file.path (This grabs the actual HTTPS web link)
     const fileDestination = req.file.path; 
 
     await CohortCertificate.create({
@@ -121,51 +123,23 @@ app.post('/api/submit-cohort', upload.single('attachedCertificate'), async (req,
       emailId: emailId.trim().toLowerCase(),
       mobileNumber: mobileNumber.trim(),
       courseName: courseName.trim(),
-      fileUrl: fileDestination
+      fileUrl: fileDestination // This will now save the clean online https:// link!
     });
 
-    // EMAIL TEMPLATE BLOCK
-    const luxuryMailTemplate = `
-      <!DOCTYPE html>
-      <html>
-      <head><meta charset="utf-8"></head>
-      <body style="margin:0;padding:0;background-color:#f4f6f8;font-family:'Segoe UI',Arial,sans-serif;">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f4f6f8;">
-          <tr>
-            <td align="center" style="padding:40px 10px;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.05);">
-                <tr>
-                  <td align="center" style="background:linear-gradient(135deg, #6b1023, #8a1f3d);padding:40px 30px;color:#ffffff;font-size:24px;font-weight:800;text-transform:uppercase;">
-                    urcenoteX Registry
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:40px 35px;">
-                    <p style="font-size:18px;font-weight:700;color:#1a202c;">Dear ${surname} ${lastName || ''},</p>
-                    <p style="font-size:15px;color:#4a5568;line-height:1.6;">Your final course completion certificate file has been logged securely into our Cloud Secure Vaults.</p>
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f7fafc;border:1px solid #edf2f7;border-radius:12px;padding:20px;margin-bottom:25px;">
-                      <tr><td><strong>Roll Number:</strong></td><td>${rollNumber.toUpperCase()}</td></tr>
-                      <tr><td><strong>Course:</strong></td><td>${courseName}</td></tr>
-                      <tr><td><strong>Certificate Link:</strong></td><td><a href="${fileDestination}" target="_blank">View Uploaded Document</a></td></tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-      </html>
-    `;
+    // Make sure your JSON success response sends this URL back to the frontend form for EmailJS
+    res.status(201).json({ 
+      success: true, 
+      message: "Records updated successfully!",
+      fileUrl: fileDestination // 👈 Crucial for EmailJS to link it correctly in the email template!
+    });
 
-    dispatchConfirmationEmail(emailId.trim().toLowerCase(), "Clearance Receipt: Cohort 16 Certificate Logged", luxuryMailTemplate);
-
-    res.status(201).json({ success: true, message: "Records updated successfully!" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Database server failure loops." });
   }
 });
+
+
 
 // FETCH SECURE COHORT LIST
 app.post('/api/secure-cohort-list', async (req, res) => {
