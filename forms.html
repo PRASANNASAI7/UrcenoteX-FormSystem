@@ -10,7 +10,8 @@
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  
 <style>
 :root {
   --maroon: #6b1023;
@@ -406,6 +407,25 @@ async function handleSecurePipelineSubmit(event) {
 
     if (result.success) {
       resetButtonState(submitBtn, contextLabel);
+
+      // 👇 ADD THE EMAILJS CALL HERE 👇
+      const templateParams = {
+        surname: targetedForm.surname.value,
+        lastName: targetedForm.lastName.value || '',
+        emailId: targetedForm.emailId.value,
+        rollNumber: targetedForm.rollNumber.value,
+        courseName: targetedForm.courseName.value,
+        fileUrl: result.fileUrl || formData.get('attachedCertificate').name // Falls back to name if server doesn't return URL
+      };
+
+      emailjs.send("YOUR_SERVICE_ID_HERE", "YOUR_TEMPLATE_ID_HERE", templateParams)
+        .then(() => {
+          console.log("🚀 Email successfully dispatched via EmailJS!");
+        }, (error) => {
+          console.error("❌ EmailJS failed to send:", error);
+        });
+      // 👆 EMAILJS CALL ENDS HERE 👆
+      
       document.getElementById('successModalOverlay').classList.add('show-popup');
       document.body.style.overflow = 'hidden';
       fireCelebrationConfetti();
@@ -429,6 +449,13 @@ async function handleSecurePipelineSubmit(event) {
 }
 
 document.getElementById('submitBtn').addEventListener('click', handleSecurePipelineSubmit);
+</script>
+  <script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "O8Qw0tN5QA1fJaqzp", // 👈 Replace with your actual EmailJS Public Key
+      });
+   })();
 </script>
 </body>
 </html>
