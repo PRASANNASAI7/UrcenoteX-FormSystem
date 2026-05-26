@@ -418,7 +418,7 @@ async function handleSecurePipelineSubmit(event) {
         fileUrl: result.fileUrl || formData.get('attachedCertificate').name // Falls back to name if server doesn't return URL
       };
 
-      emailjs.send("YOUR_SERVICE_ID_HERE", "YOUR_TEMPLATE_ID_HERE", templateParams)
+      emailjs.send("service_gcnyayv", "template_kyxttpr", templateParams)
         .then(() => {
           console.log("🚀 Email successfully dispatched via EmailJS!");
         }, (error) => {
