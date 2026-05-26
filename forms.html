@@ -410,6 +410,7 @@ async function handleSecurePipelineSubmit(event) {
 
       // 👇 ADD THE EMAILJS CALL HERE 👇
       const templateParams = {
+        from_name: "Cohort 16 Administration",
         surname: targetedForm.surname.value,
         lastName: targetedForm.lastName.value || '',
         emailId: targetedForm.emailId.value,
