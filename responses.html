@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cohort 16 - Administration Console</title>
+<title>Cohort 17 - Administration Console</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
@@ -19,21 +19,21 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: none
 .navbar-brand { color: #fff !important; font-weight: 700; }
 .section-title { font-weight: 800; color: var(--maroon); }
 
-.response-card { background: #fff; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 20px; border-left: 5px solid var(--maroon); transition: 0.2s ease; }
+.response-card { background: #fff; border-radius: 14px; box-shadow: 0 4px 17px rgba(0,0,0,0.03); padding: 20px; border-left: 5px solid var(--maroon); transition: 0.2s ease; }
 .response-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
 
 .btn-delete { color: #dc3545; border: 1px solid #dc3545; background: transparent; transition: 0.2s; }
 .btn-delete:hover { background: #dc3545; color: #fff; }
 
 .btn-excel { background: #1f7246; color: #fff; border: none; font-weight: 600; border-radius: 50px; padding: 8px 25px; transition: 0.2s ease; }
-.btn-excel:hover { background: #165232; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(31,114,70,0.25); }
+.btn-excel:hover { background: #175232; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(31,114,70,0.25); }
 </style>
 </head>
 <body>
 
 <nav class="navbar navbar-dark shadow-sm">
   <div class="container">
-    <a class="navbar-brand" href="#"><i class="fa-solid fa-vault me-2"></i>Cohort 16 Administration Terminal</a>
+    <a class="navbar-brand" href="#"><i class="fa-solid fa-vault me-2"></i>Cohort 17 Administration Terminal</a>
     <span class="badge bg-success rounded-pill px-3 py-2"><i class="fa-solid fa-user-shield me-1"></i> Firewall Active</span>
   </div>
 </nav>
@@ -169,7 +169,7 @@ async function downloadExcelReport() {
     
     const hiddenAnchorElement = document.createElement('a');
     hiddenAnchorElement.href = runtimeUrl;
-    hiddenAnchorElement.download = `Cohort16_Certificates_${Date.now()}.xlsx`;
+    hiddenAnchorElement.download = `Cohort17_Certificates_${Date.now()}.xlsx`;
     document.body.appendChild(hiddenAnchorElement);
     hiddenAnchorElement.click();
     
