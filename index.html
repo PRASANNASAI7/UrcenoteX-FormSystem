@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cohort 16 - Certificate Clearance Portal</title>
+<title>Cohort 17 - Certificate Clearance Portal</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
@@ -18,7 +18,7 @@
   --maroon-light: #8a1f3d;
   --bg: #f4f6f9;
   --success-green: #2ecc71;
-  --premium-shadow: 0 20px 40px rgba(107, 16, 35, 0.06);
+  --premium-shadow: 0 20px 40px rgba(107, 17, 35, 0.06);
   --border-smooth: #e2e8f0;
 }
 
@@ -30,7 +30,7 @@ body {
 }
 
 .navbar { 
-  background: rgba(107, 16, 35, 0.98); 
+  background: rgba(107, 17, 35, 0.98); 
   backdrop-filter: blur(10px); 
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
@@ -109,7 +109,7 @@ body {
 }
 .form-control:focus { 
   border-color: var(--maroon); 
-  box-shadow: 0 0 0 5px rgba(107, 16, 35, 0.12); 
+  box-shadow: 0 0 0 5px rgba(107, 17, 35, 0.12); 
   background-color: #fff; 
   transform: translateY(-1px);
   outline: none;
@@ -125,7 +125,7 @@ body {
   font-size: 15px; 
   letter-spacing: 0.2px;
   transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-  box-shadow: 0 8px 25px rgba(107,16,35,0.25); 
+  box-shadow: 0 8px 25px rgba(107,17,35,0.25); 
   position: relative; 
   overflow: hidden; 
   display: inline-flex; 
@@ -137,7 +137,7 @@ body {
 }
 .btn-maroon:hover {
   background: linear-gradient(135deg, var(--maroon-light), var(--maroon));
-  box-shadow: 0 10px 28px rgba(107,16,35,0.35);
+  box-shadow: 0 10px 28px rgba(107,17,35,0.35);
   transform: translateY(-1px);
 }
 .btn-maroon .btn-text { transition: all 0.3s ease; opacity: 1; }
@@ -176,7 +176,7 @@ body {
   align-items: center;
   justify-content: center;
   opacity: 0; pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s cubic-bezier(0.17, 1, 0.3, 1);
   padding: 20px;
 }
 .custom-modal-backdrop.show-popup {
@@ -213,7 +213,7 @@ body {
 }
 
 .svg-success-container { width: 85px; height: 85px; margin: 0 auto 24px; display: block; }
-.checkmark-circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2.5; stroke-miterlimit: 10; stroke: var(--success-green); fill: none; animation: strokeCircle 0.65s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+.checkmark-circle { stroke-dasharray: 176; stroke-dashoffset: 176; stroke-width: 2.5; stroke-miterlimit: 10; stroke: var(--success-green); fill: none; animation: strokeCircle 0.65s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
 .checkmark-kick { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; stroke-width: 3.5; stroke: var(--success-green); fill: none; animation: strokeCheck 0.45s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards; }
 
 @keyframes strokeCircle { to { stroke-dashoffset: 0; } }
@@ -240,7 +240,7 @@ body {
     <div class="col-xl-7 col-lg-9 col-md-11 p-0" id="formWrapperPanel" data-aos="fade-up">
       
       <div class="custom-form-card" id="cardBodyElement">
-        <h3 class="text-center mb-4" style="font-weight: 800; color: var(--maroon); letter-spacing: -0.5px; font-size: clamp(1.25rem, 3vw, 1.65rem);">Cohort 16 Certificate Clearance Form</h3>
+        <h3 class="text-center mb-4" style="font-weight: 800; color: var(--maroon); letter-spacing: -0.5px; font-size: clamp(1.25rem, 3vw, 1.65rem);">Cohort 17 Certificate Clearance Form</h3>
         
         <div id="inlineErrorAlert" class="custom-ui-alert">
           <i class="fa-solid fa-circle-exclamation"></i>
@@ -252,12 +252,12 @@ body {
             
             <div>
               <label class="form-label fw-semibold">Surname <span class="text-danger">*</span></label>
-              <input type="text" name="surname" class="form-control" placeholder="Ex: Prasanna" required>
+              <input type="text" name="surname" class="form-control" placeholder="Ex: Your Initial/Surname" required>
             </div>
             
             <div>
               <label class="form-label fw-semibold">Last Name <span class="text-danger">*</span></label>
-              <input type="text" name="lastName" class="form-control" placeholder="Ex: Sai">
+              <input type="text" name="lastName" class="form-control" placeholder="Ex: Your Last Name">
             </div>
 
             <div class="span-full-width">
@@ -267,7 +267,7 @@ body {
             
             <div>
               <label class="form-label fw-semibold">Roll Number <span class="text-danger">*</span></label>
-              <input type="text" name="rollNumber" id="rollInput" class="form-control text-uppercase" placeholder="Ex: 25NG5A0525" pattern="^[0-9]{2}NG[0-9]{1}[A-Z]{1}[0-9]{2}[A-Z0-9]{2}$" title="Please enter a valid JNTU format Roll Number." maxlength="10" required>
+              <input type="text" name="rollNumber" id="rollInput" class="form-control text-uppercase" placeholder="Ex: 25NG5A0500" pattern="^[0-9]{2}NG[0-9]{1}[A-Z]{1}[0-9]{2}[A-Z0-9]{2}$" title="Please enter a valid JNTU format Roll Number." maxlength="10" required>
             </div>
             
             <div>
@@ -276,8 +276,8 @@ body {
             </div>
             
             <div class="span-full-width">
-              <label class="form-label fw-semibold">Cohort 16 Registered Course Name <span class="text-danger">*</span></label>
-              <input type="text" name="courseName" class="form-control" placeholder="Ex: Full Stack Web Development / Data Science" required>
+              <label class="form-label fw-semibold">Cohort 17 Registered Course Name <span class="text-danger">*</span></label>
+              <input type="text" name="courseName" class="form-control" placeholder="Ex: Google Generative Ai / Celinos" required>
             </div>
             
             <div class="span-full-width">
@@ -305,7 +305,7 @@ body {
     <div class="svg-success-container">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" width="85" height="85">
         <circle class="checkmark-circle" cx="26" cy="26" r="25"/>
-        <path class="checkmark-kick" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+        <path class="checkmark-kick" d="M14.1 27.2l7.1 7.2 17.7-17.8"/>
       </svg>
     </div>
     <h2 class="fw-bold text-dark mb-2" style="letter-spacing: -0.5px; font-size: clamp(1.4rem, 3.5vw, 1.85rem);">Submission Successful!</h2>
@@ -351,7 +351,7 @@ function fireCelebrationConfetti() {
 }
 
 new Typed("#typing-text", {
-  strings: ["Cohort 16 Verification Gateway", "Secure Certificate Processing Cluster"],
+  strings: ["Cohort 17 Verification Gateway", "Secure Certificate Processing Cluster"],
   typeSpeed: 60,
   backSpeed: 30,
   loop: true
@@ -410,7 +410,7 @@ async function handleSecurePipelineSubmit(event) {
 
       // 👇 ADD THE EMAILJS CALL HERE 👇
       const templateParams = {
-        from_name: "Cohort 16 Administration",
+        from_name: "Cohort 17 Administration",
         surname: targetedForm.surname.value,
         lastName: targetedForm.lastName.value || '',
         emailId: targetedForm.emailId.value,
