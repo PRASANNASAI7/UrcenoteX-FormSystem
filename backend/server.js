@@ -243,7 +243,7 @@ const PRELOADED_STUDENTS = [
     lastName: "Sai Keerthana",
     emailId: "veerlasaikeerthana130@gmail.com",
     mobileNumber: "8466802922"
-  }
+  },
    {
     rollNumber: "25NG5A05F1",
     surname: "NERUSU",
