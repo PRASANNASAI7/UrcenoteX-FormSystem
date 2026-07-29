@@ -244,6 +244,344 @@ const PRELOADED_STUDENTS = [
     emailId: "veerlasaikeerthana130@gmail.com",
     mobileNumber: "8466802922"
   }
+   {
+    rollNumber: "25NG5A05F1",
+    surname: "NERUSU",
+    lastName: "BHANUJA",
+    emailId: "bhanujanerusu@gmail.com",
+    mobileNumber: "6301319934"
+  },
+  {
+    rollNumber: "24NG1A05F2",
+    surname: "PAVULURI",
+    lastName: "SOWJANYA",
+    emailId: "sowjisowjanya2007@gmail.com",
+    mobileNumber: "7995258387"
+  },
+  {
+    rollNumber: "24NG1A05F3",
+    surname: "PETETI",
+    lastName: "LOKSHITHA",
+    emailId: "petetilokshitha19@gmail.com",
+    mobileNumber: "9704396737"
+  },
+{
+    rollNumber: "24NG1A05F4",
+    surname: "PULIGADDA",
+    lastName: "DHARANI SRI",
+    emailId: "dharanisri94342@gmail.com",
+    mobileNumber: "7981507335"
+  },
+{
+    rollNumber: "24NG1A05F5",
+    surname: "PUNNA",
+    lastName: "JANAKI RAM CHARAN",
+    emailId: "punnajanakiramcharan@gmail.com",
+    mobileNumber: "9959037531"
+  },
+{
+    rollNumber: "24NG1A05F6",
+    surname: "RACHURI",
+    lastName: "SRI SAI SIRISHA",
+    emailId: "srisaisirisharachuri@gmail.com",
+    mobileNumber: "7993258509"
+  },
+{
+    rollNumber: "24NG1A05F7",
+    surname: "RAMALA",
+    lastName: "SPURTHI",
+    emailId: "spoorthiramala@gmail.com",
+    mobileNumber: "8074753732"
+  },
+{
+    rollNumber: "24NG1A05F8",
+    surname: "SANKARASETTI",
+    lastName: "PRATIBHATEJASWI",
+    emailId: "pratibhatejaswi752@gmail.com",
+    mobileNumber: "8142647999"
+  },
+
+{
+    rollNumber: "24NG1A05F9",
+    surname: "SAYYED",
+    lastName: "LATHIBEE",
+    emailId: "sdlathibee@gmail.com",
+    mobileNumber: "9502562825"
+  },
+{
+    rollNumber: "24NG1A05G0",
+    surname: "SHAIK",
+    lastName: "HEENA KOUSAR",
+    emailId: "afrinseema3@gmail.com",
+    mobileNumber: "8499958852"
+  },
+
+{
+    rollNumber: "24NG1A05G1",
+    surname: "SHAIK",
+    lastName: "MASUMA",
+    emailId: "skmasuma12306@gmail.com",
+    mobileNumber: "9390086552"
+  },
+
+{
+    rollNumber: "24NG1A05G2",
+    surname: "SHAIK",
+    lastName: "SABEER",
+    emailId: "sabeer22006@gmail.com",
+    mobileNumber: "9391747269"
+  },
+
+{
+    rollNumber: "24NG1A05G3",
+    surname: "SHAIK",
+    lastName: "SHASHMI",
+    emailId: "shaikshashmi407@gmail.com",
+    mobileNumber: "8985421963"
+  },
+
+{
+    rollNumber: "24NG1A05G4",
+    surname: "SYKAM",
+    lastName: "RAKSHAK",
+    emailId: "sunnysykam330@gmail.com",
+    mobileNumber: "9100087704"
+  },
+
+{
+    rollNumber: "24NG1A05G5",
+    surname: "TANGELLAMUDI",
+    lastName: "SWATHI",
+    emailId: "swathitangellamudi0@gmail.com",
+    mobileNumber: "9573739432"
+  },
+
+{
+    rollNumber: "24NG1A05G6",
+    surname: "TANURI",
+    lastName: "SRINIVAS",
+    emailId: "srinivastanuri909@gmail.com",
+    mobileNumber: "8885410298"
+  },
+
+{
+    rollNumber: "24NG1A05G7",
+    surname: "VEERABATTINA",
+    lastName: "GNANA RAJU",
+    emailId: "gnanaraju610@gmail.com",
+    mobileNumber: "7416835289"
+  },
+
+{
+    rollNumber: "24NG1A05G8",
+    surname: "VELCHURI",
+    lastName: "BRAHMA TEJA",
+    emailId: "vvelchuribrahmateja@gmail.com",
+    mobileNumber: "9391318982"
+  },
+{
+    rollNumber: "24NG1A05G9",
+    surname: "VEMULA",
+    lastName: "SAI KOWSHTUB",
+    emailId: "vemulasaithanu@gmail.com",
+    mobileNumber: "6309783808"
+  },
+ {
+    rollNumber: "25NG5A05H0",
+    surname: "VEMURI",
+    lastName: "LOKESH SAI KUMAR",
+    emailId: "lokeshvemuri87@gmail.com",
+    mobileNumber: "6301986503"
+  },
+{
+  rollNumber: "24NG1A05H1",
+  surname: "ALUBILLI",
+  lastName: "SWATHI",
+  emailId: "alubilliswathi06@gmail.com",
+  mobileNumber: "7569854723"	
+},
+{
+  rollNumber: "24NG1A05H2",
+  surname: "ALUGOLU",
+  lastName: "DOLA HARINI",
+  emailId: "alugoludevi55@gmail.com",
+  mobileNumber: "8008469848"
+},
+{
+  rollNumber: "24NG1A05H3",
+  surname: "ANNABATHULA",
+  lastName: "JAYASRI BHAVANI",
+  emailId: "annabathulajayasri@gmail.com",
+  mobileNumber: "8374731159"
+},
+{
+  rollNumber: "24NG1A05H5",
+  surname: "BAREDDY",
+  lastName: "VENKATA SUBBA REDDY",
+  emailId: "bareddysubbareddy44@gmail.com",
+  mobileNumber: "9573670428"
+},
+{
+  rollNumber: "24NG1A05H6",
+  surname: "BEVARA",
+  lastName: "VENKATA SIVA BHUVAN DHARMESH",
+  emailId: "dharmeshbavara@gmail.com",
+  mobileNumber: "9347979542"
+},
+{
+  rollNumber: "24NG1A05H8",
+  surname: "BOSETTI",
+  lastName: "LAVANYA",
+  emailId: "lavanyabosetti@gmail.com",
+  mobileNumber: "8688914618"
+},
+{
+  rollNumber: "24NG1A05I1",
+  surname: "DUDIGAM",
+  lastName: "ANIL",
+  emailId: "dudigamanil@gmail.com",
+  mobileNumber: "8247213405"
+},
+{
+  rollNumber: "24NG1A05I2",
+  surname: "GEDADASU",
+  lastName: "ANITHASRI",
+  emailId: "anithasrigedadasu@gmail.com",
+  mobileNumber: "6300850076"
+},
+{
+  rollNumber: "24NG1A05I3",
+  surname: "JOHN",
+  lastName: "BLESSY SRI PRIYA",
+  emailId: "sripriya66886@gmail.com",
+  mobileNumber: "7416938115"
+},
+{
+  rollNumber: "24NG1A05I4",
+  surname: "KADIYAM",
+  lastName: "GEETHIKA",
+  emailId: "geethikakadiyam786@gmail.com",
+  mobileNumber: "8897266488"
+},
+{
+  rollNumber: "24NG1A05I5",
+  surname: "KARUMANCHI",
+  lastName: "ALTHAF",
+  emailId: "anwaranwar9164@gmail.com",
+  mobileNumber: "6301403744"
+},
+{
+  rollNumber: "24NG1A05I6",
+  surname: "KONA",
+  lastName: "JANANI",
+  emailId: "jananikonas105@gmail.com",
+  mobileNumber: "9704089744"
+},
+{
+  rollNumber: "24NG1A05I7",
+  surname: "KONDETI",
+  lastName: "KARUNA",
+  emailId: "karunakondeti7@gmail.com",
+  mobileNumber: "9392659417"
+},
+{
+  rollNumber: "24NG1A05I8",
+  surname: "MALLIPEDDI",
+  lastName: "AKHIL CHOWDARY",
+  emailId: "akhil252006@gmail.com",
+  mobileNumber: "8367717254"
+},
+{
+  rollNumber: "24NG1A05I9",
+  surname: "MANDALI",
+  lastName: "JAHNAVI",
+  emailId: "mandalijahnavi46@gmail.com",
+  mobileNumber: "9502466189"
+},
+{
+  rollNumber: "24NG1A05J0",
+  surname: "MARUBOYINA",
+  lastName: "HARIKA",
+  emailId: "maruboyinaharika2006@gmail.com",
+  mobileNumber: "8501963659"
+},
+{
+  rollNumber: "24NG1A05J1",
+  surname: "MOHAMMAD",
+  lastName: "TURABALI",
+  emailId: "mohammadturabali110@gmail.com",
+  mobileNumber: "8639236715"
+},
+{
+  rollNumber: "24NG1A05J2",
+  surname: "MUNIPALLI",
+  lastName: "BHAVYASRI",
+  emailId: "munipallibhavyasri@gmail.com",
+  mobileNumber: "8555063175"
+},
+{
+  rollNumber: "24NG1A05J3",
+  surname: "POLAMARISETTI",
+  lastName: "NAGA DURGA POOJITHA",
+  emailId: "poojithadurga630@gmail.com",
+  mobileNumber: "7675057833"
+},
+{
+  rollNumber: "24NG1A05J5",
+  surname: "THOTA",
+  lastName: "ASRITHA",
+  emailId: "thotaasritha1@gmail.com",
+  mobileNumber: "6303778297"
+},
+{
+  rollNumber: "24NG1A05J6",
+  surname: "VADDI",
+  lastName: "KUSUMA",
+  emailId: "vaddisunny0@gmail.com",
+  mobileNumber: "9848715059"
+},
+{
+  rollNumber: "24NG1A05J7",
+  surname: "VEERLA",
+  lastName: "PRASANNA",
+  emailId: "prasannaveerla129@gmail.com",
+  mobileNumber: "7981978300"
+},
+{
+  rollNumber: "24NG1A05J8",
+  surname: "VELIGARAPU",
+  lastName: "SAILAJA",
+  emailId: "sailajaveligarapu@gmail.com",
+  mobileNumber: "6300916619"
+},
+{
+  rollNumber: "24NG1A05J9",
+  surname: "YALAMANCHI",
+  lastName: "NAGA SAI KRISHNA",
+  emailId: "ysaikrishna0222@gmail.com",
+  mobileNumber: "9676385751"
+},
+{
+  rollNumber: "24NG1A05K0",
+  surname: "YENREDDY",
+  lastName: "RAM KISHORE REDDY",
+  emailId: "ramkishorereddyyenreddy@gmail.com",
+  mobileNumber: "7842073899"
+},
+{
+  rollNumber: "24NG1A05K2",
+  surname: "NAKKA",
+  lastName: "PUJITHA",
+  emailId: "poojitharavikumar33@gmail.com",
+  mobileNumber: "8790596043"
+},
+{
+  rollNumber: "24NG1A05K3",
+  surname: "ECHARLA",
+  lastName: "ADINARAYANA",
+  emailId: "echaralaadhi@gmail.com",
+  mobileNumber: "6304575899"
+}
 ];
 
 // --- MONGODB SCHEMA ---
