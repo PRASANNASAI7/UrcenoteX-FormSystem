@@ -616,7 +616,7 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
-const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY || "admin@urcet"; 
+const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY || "urcet@user"; 
 
 // --- ROUTES ---
 
